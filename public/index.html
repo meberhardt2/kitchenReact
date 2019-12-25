@@ -24,20 +24,48 @@
       work correctly both with client-side routing and a non-root public URL.
       Learn how to configure a non-root public URL by running `npm run build`.
     -->
-    <title>React App</title>
+	<title>Recipe Database</title>
+	
+	<script src="%PUBLIC_URL%/spin.min.js"></script>
+
+	<style>
+		.bd-placeholder-img {
+			font-size: 1.125rem;
+			text-anchor: middle;
+			-webkit-user-select: none;
+			-moz-user-select: none;
+			-ms-user-select: none;
+			user-select: none;
+		}
+
+		@media (min-width: 768px) {
+			.bd-placeholder-img-lg {
+				font-size: 3.5rem;
+			}
+		}
+	</style>
+
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
     <div id="root"></div>
-    <!--
-      This HTML file is a template.
-      If you open it directly in the browser, you will see an empty page.
 
-      You can add webfonts, meta tags, or analytics to this file.
-      The build step will place the bundled scripts into the <body> tag.
+	<script>
+		var opts = {
+			lines: 13,
+			length: 24,
+			width: 10,
+			radius: 42,
+			color: '#b8b8b8',
+			opacity: 0.25,
+			speed: 1,
+			top: '50%',
+			left: '50%',
+			hwaccel: false
+		}
 
-      To begin the development, run `npm start` or `yarn start`.
-      To create a production bundle, use `npm run build` or `yarn build`.
-    -->
-  </body>
+		var target = document.getElementById('spinner-holder');
+		var spinner = new Spinner(opts).spin(target);   
+	</script>
+</body>
 </html>
