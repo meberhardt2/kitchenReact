@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { NotificationManager } from 'react-notifications';
+import { toast } from 'react-toastify';
 
 import API from 'api/api';
 import Form from 'components/search/form';
@@ -233,7 +233,7 @@ export default class Search extends React.Component {
 
 		API.addBookmark(data).then((data) => {
 			document.getElementById('spinner-holder').style.display = 'none';
-			NotificationManager.success('Bookmarked!', 'Recipe has been bookmarked!', 2000);
+			toast.success('Recipe has been bookmarked!');
 		});
 	}
 	/****************************************/
@@ -275,7 +275,7 @@ export default class Search extends React.Component {
 			id: tempState.recipe.id
 		};
 		API.gmail(data).then((data) => {
-			NotificationManager.success('Emailed', 'Recipe emailed!', 2000);
+			toast.success('Recipe emailed!');
 			document.getElementById('spinner-holder').style.display = 'none';
 
 			this.setState({

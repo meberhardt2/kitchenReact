@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { NotificationManager } from 'react-notifications';
+import { toast } from 'react-toastify';
 
 import API from 'api/api';
 import { compareForObjectsTag } from 'components/common/utilities';
@@ -141,7 +141,7 @@ export default class TagIndex extends React.Component {
 		let tempState = JSON.parse(JSON.stringify(this.state));
 
 		if(tempState.new_tag.length === 0){
-			NotificationManager.error('Error', 'Tag can\'t be empty', 2000);
+			toast.error('Tag can\'t be empty');
 		}
 		else{
 			document.getElementById('spinner-holder').style.display = 'block';
@@ -151,7 +151,7 @@ export default class TagIndex extends React.Component {
 				document.getElementById('spinner-holder').style.display = 'none';
 
 				if(data.id === 0){
-					NotificationManager.error('Error', 'Oops, error adding tag', 2000);
+					toast.error('Oops, error adding tag');
 				}
 				else{
 					let tempTags = tempState.tags;
@@ -167,7 +167,7 @@ export default class TagIndex extends React.Component {
 						new_tag: ''
 					});
 
-					NotificationManager.success('Added', 'Tag has been added', 2000);
+					toast.success('Tag has been added');
 				}
 			});
 		}
@@ -222,7 +222,7 @@ export default class TagIndex extends React.Component {
 				tags: tempTags
 			});
 
-			NotificationManager.success('Deleted', 'Tag has been deleted', 2000);
+			toast.success('Tag has been deleted');
 			document.getElementById('spinner-holder').style.display = 'none';
 		});
 	}

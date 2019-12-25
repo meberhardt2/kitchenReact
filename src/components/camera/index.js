@@ -1,7 +1,8 @@
 import React, { Fragment } from 'react';
 import Camera from 'react-html5-camera-photo';
+import { toast } from 'react-toastify';
+
 import 'react-html5-camera-photo/build/css/index.css';
-import { NotificationManager } from 'react-notifications';
 
 import API from 'api/api';
 import Form from 'components/camera/form';
@@ -88,12 +89,12 @@ export default class CameraIndex extends React.Component {
 		
 		if(this.state.recipe_name === ''){
 			errors = true;
-			NotificationManager.error('Error', 'Missing recipe name', 2000);
+			toast.error('Missing recipe name');
 		}
 
 		if(this.state.recipe === ''){
 			errors = true;
-			NotificationManager.error('Error', 'Missing recipe', 2000);
+			toast.error('Missing recipe');
 		}
 
 		if(!errors){
@@ -111,7 +112,7 @@ export default class CameraIndex extends React.Component {
 				document.getElementById('spinner-holder').style.display = 'none';
 
 				if(parseInt(data.id) !== 0){
-					NotificationManager.success('Added', 'Recipe added!', 2000);
+					toast.success('Recipe added!');
 
 					this.setState({
 						recipe_name: '',
@@ -121,7 +122,7 @@ export default class CameraIndex extends React.Component {
 					});
 				}
 				else{
-					NotificationManager.error('Error', 'There was an error saving', 2000);
+					toast.error('There was an error saving');
 				}
 			});
 		}

@@ -1,5 +1,5 @@
 import React, { Fragment } from 'react';
-import { NotificationManager } from 'react-notifications';
+import { toast } from 'react-toastify';
 
 import API from 'api/api';
 import Form from 'components/upload/form';
@@ -85,12 +85,12 @@ export default class Upload extends React.Component {
 		
 		if(this.state.recipe_name === ''){
 			errors = true;
-			NotificationManager.error('Error', 'Missing recipe name', 2000);
+			toast.error('Missing recipe name');
 		}
 
 		if(this.state.recipe === ''){
 			errors = true;
-			NotificationManager.error('Error', 'Missing recipe', 2000);
+			toast.error('Missing recipe');
 		}
 
 		if(!errors){
@@ -108,7 +108,7 @@ export default class Upload extends React.Component {
 				document.getElementById('spinner-holder').style.display = 'none';
 
 				if(parseInt(data.id) !== 0){
-					NotificationManager.success('Added', 'Recipe added!', 2000);
+					toast.success('Recipe added!');
 
 					this.setState({
 						recipe_name: '',
@@ -118,7 +118,7 @@ export default class Upload extends React.Component {
 					});
 				}
 				else{
-					NotificationManager.error('Error', 'There was an error saving', 2000);
+					toast.error('There was an error saving');
 				}
 			});
 		}
