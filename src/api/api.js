@@ -7,7 +7,7 @@ class API {
 	static getBookmark(){
 		return axios({
 			method: 'GET',
-			url: 'https://eberhardt.cloud:2001/api/bookmark',
+			url: 'https://eberhardt.cloud:2004/api/bookmark',
 		})
 		.then(function (response){
 			return response.data;
@@ -20,7 +20,7 @@ class API {
 	static addBookmark(data){
 		return axios({
 			method: 'POST',
-			url: 'https://eberhardt.cloud:2001/api/bookmark',
+			url: 'https://eberhardt.cloud:2004/api/bookmark',
 			data: data
 		})
 		.then(function (response){
@@ -34,7 +34,7 @@ class API {
 	static getTags(){
 		return axios({
 			method: 'GET',
-			url: 'https://eberhardt.cloud:2001/api/tags',
+			url: 'https://eberhardt.cloud:2004/api/tags',
 		})
 		.then(function (response){
 			return response.data;
@@ -47,7 +47,7 @@ class API {
 	static addTag(data){
 		return axios({
 			method: 'POST',
-			url: 'https://eberhardt.cloud:2001/api/tags',
+			url: 'https://eberhardt.cloud:2004/api/tags',
 			data: data,
 		})
 		.then(function (response){
@@ -61,7 +61,7 @@ class API {
 	static deleteTag(id){
 		return axios({
 			method: 'DELETE',
-			url: `https://eberhardt.cloud:2001/api/tags/${id}`,
+			url: `https://eberhardt.cloud:2004/api/tags/${id}`,
 		})
 		.then(function (response){
 			return response.data;
@@ -74,7 +74,7 @@ class API {
 	static updateTag(data){
 		return axios({
 			method: 'PATCH',
-			url: `https://eberhardt.cloud:2001/api/tags/${data.id}`,
+			url: `https://eberhardt.cloud:2004/api/tags/${data.id}`,
 			data: data,
 		})
 		.then(function (response){
@@ -88,7 +88,7 @@ class API {
 	static addRecipe(data){
 		return axios({
 			method: 'POST',
-			url: `https://eberhardt.cloud:2001/api/recipe`,
+			url: `https://eberhardt.cloud:2004/api/recipe`,
 			data: data,
 		})
 		.then(function (response){
@@ -102,7 +102,7 @@ class API {
 	static deleteRecipe(id){
 		return axios({
 			method: 'DELETE',
-			url: `https://eberhardt.cloud:2001/api/recipe/${id}`,
+			url: `https://eberhardt.cloud:2004/api/recipe/${id}`,
 		})
 		.then(function (response){
 			return response.data;
@@ -115,7 +115,7 @@ class API {
 	static saveRecipe(data){
 		return axios({
 			method: 'PATCH',
-			url: `https://eberhardt.cloud:2001/api/recipe/${data.id}`,
+			url: `https://eberhardt.cloud:2004/api/recipe/${data.id}`,
 			data: data,
 		})
 		.then(function (response){
@@ -129,7 +129,7 @@ class API {
 	static search(data){
 		return axios({
 			method: 'POST',
-			url: `https://eberhardt.cloud:2001/api/search`,
+			url: `https://eberhardt.cloud:2004/api/search`,
 			data: data,
 		})
 		.then(function (response){
@@ -143,7 +143,7 @@ class API {
 	static random(){
 		return axios({
 			method: 'POST',
-			url: `https://eberhardt.cloud:2001/api/random`,
+			url: `https://eberhardt.cloud:2004/api/random`,
 		})
 		.then(function (response){
 			return response.data;
@@ -156,7 +156,7 @@ class API {
 	static getRecipe(id){
 		return axios({
 			method: 'GET',
-			url: `https://eberhardt.cloud:2001/api/recipe/${id}`,
+			url: `https://eberhardt.cloud:2004/api/recipe/${id}`,
 		})
 		.then(function (response){
 			return response.data;
@@ -169,7 +169,7 @@ class API {
 	static cameraUpload(data){
 		return axios({
 			method: 'POST',
-			url: `https://eberhardt.cloud:2001/api/camera`,
+			url: `https://eberhardt.cloud:2004/api/camera`,
 			data: data,
 		})
 		.then(function (response){
@@ -183,7 +183,7 @@ class API {
 	static gmail(data){
 		return axios({
 			method: 'POST',
-			url: `https://eberhardt.cloud:2001/api/recipe/${data.id}/gmail`,
+			url: `https://eberhardt.cloud:2004/api/recipe/${data.id}/gmail`,
 			data: data,
 		})
 		.then(function (response){
@@ -197,7 +197,7 @@ class API {
 	static sendgrid(data){
 		return axios({
 			method: 'POST',
-			url: `https://eberhardt.cloud:2001/api/recipe/${data.id}/sendgrid`,
+			url: `https://eberhardt.cloud:2004/api/recipe/${data.id}/sendgrid`,
 			data: data,
 		})
 		.then(function (response){
@@ -212,7 +212,7 @@ class API {
 		var form_data = new FormData();
 		form_data.append(data.filename, data.file);
 
-		const request = new Request(`https://eberhardt.cloud:2001/api/upload`, {
+		const request = new Request(`https://eberhardt.cloud:2004/api/upload`, {
 			method: 'POST',
 			'content-type': 'multipart/form-data',
 			body: form_data,
