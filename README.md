@@ -5,7 +5,8 @@ This project relies on kitchenExpress to serve the react files and kitchenAPI fo
 dev setup:
 - ubuntu multipass to create a VM
 - edit hosts file to point dev.whatever.com to the VMs ip
-- use HOST=0.0.0.0 npm run start in the VM to be able to access the react dev server outside VM
+- add HOST=0.0.0.0 to the .env file so react dev server can be access remotely (outside the vm)
+- ssl can be toggled on and off in the .env. when requesting access to the camera, it only works on https by browser decree
 - after running build, move files in the www folder to the express directory on prod and/or the express directory in the VM
 - api on prod can be updated with git
 - express on prod can be updated with git
@@ -18,5 +19,4 @@ prod setup:
 
 
 to run a secure dev server, for now:
-node_modules/react-dev-utils/webpackHotDevClient.js, line 62:
-protocol: window.location.protocol === 'https:' ? 'wss' : 'ws',
+HTTPS=true in .env
