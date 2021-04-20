@@ -45,12 +45,19 @@ export default class CameraIndex extends React.Component {
 
 		API.cameraUpload(data).then((data) => {
 			document.getElementById('spinner-holder').style.display = 'none';
-			//console.log(data);
-			this.setState({
-				recipe:data.text,
-				showCamera: false,
-				showPictureForm: true
-			});
+			if(typeof data === 'undefined' || typeof data.status === 'undefined' || data.status === 'forbidden'){
+				toast.error('Denied');
+			}
+			else{
+				if(data.status === 'ok'){
+					//console.log(data);
+					this.setState({
+						recipe:data.text,
+						showCamera: false,
+						showPictureForm: true
+					});
+				}
+			}
 		});
 	}
 	/****************************************/
@@ -111,18 +118,25 @@ export default class CameraIndex extends React.Component {
 			API.addRecipe(data).then((data) => {
 				document.getElementById('spinner-holder').style.display = 'none';
 
-				if(parseInt(data.id) !== 0){
-					toast.success('Recipe added!');
-
-					this.setState({
-						recipe_name: '',
-						recipe: '',
-						showCamera: true,
-						showPictureForm: false,
-					});
+				if(typeof data === 'undefined' || typeof data.status === 'undefined' || data.status === 'forbidden'){
+					toast.error('Denied');
 				}
 				else{
-					toast.error('There was an error saving');
+					if(data.status === 'ok'){
+						if(parseInt(data.id) !== 0){
+							toast.success('Recipe added!');
+
+							this.setState({
+								recipe_name: '',
+								recipe: '',
+								showCamera: true,
+								showPictureForm: false,
+							});
+						}
+						else{
+							toast.error('There was an error saving');
+						}
+					}
 				}
 			});
 		}

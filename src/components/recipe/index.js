@@ -63,17 +63,6 @@ export default class Recipe extends React.Component {
 
 
 	/****************************************/
-	/* i dont think we want to do this
-	componentDidUpdate(prevProps, prevState){
-		if(parseInt(this.props.match.params.id,0) !== 0 && parseInt(this.props.match.params.id,10) !== parseInt(prevProps.id,10)){
-			this.getRecipe();
-		}
-	}
-	*/
-	/****************************************/
-
-
-	/****************************************/
 	getRecipe(id){
 		//remember to remove assigned tags from all tags
 		API.getRecipe(id).then((data) => {
@@ -220,24 +209,30 @@ export default class Recipe extends React.Component {
 			}
 
 			document.getElementById('spinner-holder').style.display = 'block';
-
 			API.addRecipe(data).then((data) => {
 				document.getElementById('spinner-holder').style.display = 'none';
 
-				if(parseInt(data.id) !== 0){
-					toast.success('Recipe added!');
-
-					this.setState({
-						recipe_name: '',
-						recipe: '',
-						bookmarked: 'n',
-						ingredients: '',
-						tags: [],
-						all_tags: tempState.all_tags_immutable
-					});
+				if(typeof data === 'undefined' || typeof data.status === 'undefined' || data.status === 'forbidden'){
+					toast.error('Denied');
 				}
 				else{
-					toast.error('There was an error saving');
+					if(data.status === 'ok'){
+						if(parseInt(data.id) !== 0){
+							toast.success('Recipe added!');
+
+							this.setState({
+								recipe_name: '',
+								recipe: '',
+								bookmarked: 'n',
+								ingredients: '',
+								tags: [],
+								all_tags: tempState.all_tags_immutable
+							});
+						}
+						else{
+							toast.error('There was an error saving');
+						}
+					}
 				}
 			});
 		}
@@ -284,8 +279,14 @@ export default class Recipe extends React.Component {
 
 			API.saveRecipe(data).then((data) => {
 				document.getElementById('spinner-holder').style.display = 'none';
-
-				toast.success('Recipe saved!');
+				if(typeof data === 'undefined' || typeof data.status === 'undefined' || data.status === 'forbidden'){
+					toast.error('Denied');
+				}
+				else{
+					if(data.status === 'ok'){
+						toast.success('Recipe saved!');
+					}
+				}
 			});
 		}
 	}
@@ -322,18 +323,26 @@ export default class Recipe extends React.Component {
 		document.getElementById('spinner-holder').style.display = 'block';
 
 		API.deleteRecipe(tempState.id).then((data) => {
-			this.setState({
-				id: 0,
-				recipe_name: '',
-				recipe: '',
-				bookmarked: 'n',
-				ingredients: '',
-				tags: [],
-				all_tags: tempState.all_tags_immutable
-			});
-
-			toast.success('Recipe has been deleted');
 			document.getElementById('spinner-holder').style.display = 'none';
+
+			if(typeof data === 'undefined' || typeof data.status === 'undefined' || data.status === 'forbidden'){
+				toast.error('Denied');
+			}
+			else{
+				if(data.status === 'ok'){
+					this.setState({
+						id: 0,
+						recipe_name: '',
+						recipe: '',
+						bookmarked: 'n',
+						ingredients: '',
+						tags: [],
+						all_tags: tempState.all_tags_immutable
+					});
+
+					toast.success('Recipe has been deleted');
+				}
+			}
 		});
 	}
 	/****************************************/

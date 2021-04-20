@@ -17,6 +17,9 @@ prod setup:
 - use the firewall to port forward port 80 and 443 to our higher ports that we bind the servers to. keeps possible exploits as running as non-root
 - express and node both use letsencrypt
 
+pm2
+- to generate the startup script, pm2 startup. it provides the command root must run for it to start on boot
+- make sure to run "pm2 save" when all the processes are running, then when it starts on boot it will also fire up those processes
 
 to run a secure dev server, for now:
 HTTPS=true in .env

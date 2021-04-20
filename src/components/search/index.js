@@ -233,7 +233,14 @@ export default class Search extends React.Component {
 
 		API.addBookmark(data).then((data) => {
 			document.getElementById('spinner-holder').style.display = 'none';
-			toast.success('Recipe has been bookmarked!');
+			if(typeof data === 'undefined' || typeof data.status === 'undefined' || data.status === 'forbidden'){
+				toast.error('Denied');
+			}
+			else{
+				if(data.status === 'ok'){
+					toast.success('Recipe has been bookmarked!');
+				}
+			}
 		});
 	}
 	/****************************************/
@@ -268,19 +275,27 @@ export default class Search extends React.Component {
 	sendEmailForReals(){
 		let tempState = JSON.parse(JSON.stringify(this.state));
 
-		document.getElementById('spinner-holder').style.display = 'block';
-		console.log(tempState);
 		let data = {
 			email: tempState.email,
 			id: tempState.recipe.id
 		};
+
+		document.getElementById('spinner-holder').style.display = 'block';
 		API.gmail(data).then((data) => {
-			toast.success('Recipe emailed!');
 			document.getElementById('spinner-holder').style.display = 'none';
 
 			this.setState({
 				showEmail: false
 			});
+
+			if(typeof data === 'undefined' || typeof data.status === 'undefined' || data.status === 'forbidden'){
+				toast.error('Denied');
+			}
+			else{
+				if(data.status === 'sent'){
+					toast.success('Recipe emailed!');
+				}
+			}
 		});
 	}
 	/****************************************/

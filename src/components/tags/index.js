@@ -100,24 +100,31 @@ export default class TagIndex extends React.Component {
 		document.getElementById('spinner-holder').style.display = 'block';
 
 		API.updateTag(this.state.tag).then((data) => {
-			let tempState = JSON.parse(JSON.stringify(this.state));
-			let tempTags = tempState.tags.slice(0);
+			document.getElementById('spinner-holder').style.display = 'none';
 
-			for(let i = 0; i < tempTags.length; i++){
-				if(parseInt(tempTags[i].id,10) === parseInt(data.id,10)){
-					tempTags[i].tag = data.tag;
+			if(typeof data === 'undefined' || typeof data.status === 'undefined' || data.status === 'forbidden'){
+				toast.error('Denied');
+			}
+			else{
+				if(data.status === 'ok'){
+					let tempState = JSON.parse(JSON.stringify(this.state));
+					let tempTags = tempState.tags.slice(0);
+
+					for(let i = 0; i < tempTags.length; i++){
+						if(parseInt(tempTags[i].id,10) === parseInt(data.id,10)){
+							tempTags[i].tag = data.tag;
+						}
+					}
+
+					tempTags.sort(compareForObjectsTag);
+
+					this.setState({
+						tags: tempTags,
+						tag: {},
+						showEdit: false
+					});
 				}
 			}
-
-			tempTags.sort(compareForObjectsTag);
-
-			this.setState({
-				tags: tempTags,
-				tag: {},
-				showEdit: false
-			});
-
-			document.getElementById('spinner-holder').style.display = 'none';
 		});
 	}
 	/****************************************/
@@ -150,24 +157,31 @@ export default class TagIndex extends React.Component {
 			API.addTag(data).then((data) => {
 				document.getElementById('spinner-holder').style.display = 'none';
 
-				if(data.id === 0){
-					toast.error('Oops, error adding tag');
+				if(typeof data === 'undefined' || typeof data.status === 'undefined' || data.status === 'forbidden'){
+					toast.error('Denied');
 				}
 				else{
-					let tempTags = tempState.tags;
-					tempTags.push({
-						id: data.id,
-						tag: tempState.new_tag
-					});
+					if(data.status === 'ok'){
+						if(data.id === 0){
+							toast.error('Oops, error adding tag');
+						}
+						else{
+							let tempTags = tempState.tags;
+							tempTags.push({
+								id: data.id,
+								tag: tempState.new_tag
+							});
 
-					tempTags.sort(compareForObjectsTag);
+							tempTags.sort(compareForObjectsTag);
 
-					this.setState({
-						tags: tempTags,
-						new_tag: ''
-					});
+							this.setState({
+								tags: tempTags,
+								new_tag: ''
+							});
 
-					toast.success('Tag has been added');
+							toast.success('Tag has been added');
+						}
+					}
 				}
 			});
 		}
@@ -204,26 +218,34 @@ export default class TagIndex extends React.Component {
 		document.getElementById('spinner-holder').style.display = 'block';
 
 		API.deleteTag(this.state.delete_id).then((data) => {
-			let tempState = JSON.parse(JSON.stringify(this.state));
-			let tempTags = tempState.tags.slice(0);
-			let indexOfTagToDelete = -1;
+			document.getElementById('spinner-holder').style.display = 'none';
 
-			for(let i = 0; i < tempTags.length; i++){
-				if(parseInt(tempTags[i].id,10) === parseInt(tempState.delete_id,10)){
-					indexOfTagToDelete = i;
+			if(typeof data === 'undefined' || typeof data.status === 'undefined' || data.status === 'forbidden'){
+				toast.error('Denied');
+			}
+			else{
+				if(data.status === 'ok'){
+					let tempState = JSON.parse(JSON.stringify(this.state));
+					let tempTags = tempState.tags.slice(0);
+					let indexOfTagToDelete = -1;
+
+					for(let i = 0; i < tempTags.length; i++){
+						if(parseInt(tempTags[i].id,10) === parseInt(tempState.delete_id,10)){
+							indexOfTagToDelete = i;
+						}
+					}
+
+					if(indexOfTagToDelete >= 0){
+						tempTags.splice(indexOfTagToDelete, 1);
+					}
+
+					this.setState({
+						tags: tempTags
+					});
+
+					toast.success('Tag has been deleted');
 				}
 			}
-
-			if(indexOfTagToDelete >= 0){
-				tempTags.splice(indexOfTagToDelete, 1);
-			}
-
-			this.setState({
-				tags: tempTags
-			});
-
-			toast.success('Tag has been deleted');
-			document.getElementById('spinner-holder').style.display = 'none';
 		});
 	}
 	/****************************************/
