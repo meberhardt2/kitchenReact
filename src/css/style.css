@@ -205,6 +205,12 @@ textarea.ocr-textbox{
 	height:250px;
 }
 
+.attention, .attention a{
+	color:aqua;
+	font-weight: bold;
+	font-size: 1rem;
+}
+
 
 @media (max-width:480px){
 	.top-nav a{
