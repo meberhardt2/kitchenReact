@@ -1,0 +1,2 @@
+to install, better-sqlite3 and sqlite3 had to be removed before running npm install
+then after that finishes, install sqlite3 and then better-sqlite3

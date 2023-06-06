@@ -1,6 +1,21 @@
 import axios from 'axios';
 
-const api_url = '//'+window.location.hostname+':2004';
+let backendHost = '';
+//const apiVersion = 'v1';
+const hostname = window && window.location && window.location.hostname;
+
+if(hostname === 'dev.eberhardt.cloud'){
+	backendHost = 'http://dev.eberhardt.cloud:4000';
+}
+if(hostname === 'www.eberhardt.net'){
+	backendHost = 'https://eberhardt.cloud';
+}
+if(hostname === 'eberhardt.net'){
+	backendHost = 'https://eberhardt.cloud';
+}
+
+//const api_url = `${backendHost}/api/${apiVersion}`;
+const api_url = `${backendHost}`;
 
 /**************************************************************************************/
 class API {
