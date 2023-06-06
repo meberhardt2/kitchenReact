@@ -17,6 +17,7 @@ if(hostname === 'eberhardt.net'){
 //const api_url = `${backendHost}/api/${apiVersion}`;
 const api_url = `${backendHost}`;
 
+
 /**************************************************************************************/
 class API {
 
