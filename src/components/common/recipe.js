@@ -1,33 +1,33 @@
 import React from 'react';
 
 /**************************************************************************************/
-export default class Recipe extends React.Component {
+function Recipe(props) {
 
 	/****************************************/
-	render(){
-		return(
-			<div className="recipe-viewer">
-				<h3>{this.props.recipe.recipe_name}</h3>
+	return(
+		<div className="recipe-viewer">
+			<h3>{props.recipe.recipe_name}</h3>
 
-				<div className="row">
-					<div className="col-12">
-						<div><strong>Ingredients</strong></div>
-						<br />
-						{this.props.recipe.ingredients}
-					</div>
-				</div>
-
-				<div className="row">
-					<div className="col-12">
-						<div><strong>Recipe</strong></div>
-						<br />
-						{this.props.recipe.recipe}
-					</div>
+			<div className="row">
+				<div className="col-12">
+					<div><strong>Ingredients</strong></div>
+					<br />
+					{props.recipe.ingredients}
 				</div>
 			</div>
-		)
-	}
+
+			<div className="row">
+				<div className="col-12">
+					<div><strong>Recipe</strong></div>
+					<br />
+					{props.recipe.recipe}
+				</div>
+			</div>
+		</div>
+	);
 	/****************************************/
 
 }
 /**************************************************************************************/
+
+export default Recipe;

@@ -7,10 +7,10 @@ const hostname = window && window.location && window.location.hostname;
 if(hostname === 'dev.eberhardt.cloud'){
 	backendHost = 'http://dev.eberhardt.cloud:4000';
 }
-if(hostname === 'www.eberhardt.net'){
+if(hostname === 'www.eberhardt.cloud'){
 	backendHost = 'https://eberhardt.cloud';
 }
-if(hostname === 'eberhardt.net'){
+if(hostname === 'eberhardt.cloud'){
 	backendHost = 'https://eberhardt.cloud';
 }
 

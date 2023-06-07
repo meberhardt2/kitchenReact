@@ -1,55 +1,52 @@
 import React, { Fragment } from 'react';
 
-
 /**************************************************************************************/
-export default class Buttons extends React.Component {
+function Buttons(props) {
 
 	/****************************************/
-	render(){
-		return(
-			<Fragment>
+	return(
+		<Fragment>
+			<div className="row button-row">
+				<div className="col-12">
 
-				<div className="row button-row">
-					<div className="col-12">
+					{props.showForm && 
+						<Fragment>
+							<button type="button" className="btn btn-primary" onClick={props.handleSearch}>Search</button>
+							&nbsp;
+							<button type="button" className="btn btn-primary" onClick={props.handleRandom}>Random</button>
+						</Fragment>
+					}
 
-						{this.props.showForm && 
-							<Fragment>
-								<button type="button" className="btn btn-primary" onClick={this.props.handleSearch}>Search</button>
-								&nbsp;
-								<button type="button" className="btn btn-primary" onClick={this.props.handleRandom}>Random</button>
-							</Fragment>
-						}
+					{props.showResults && 
+						<Fragment>
+							<button type="button" className="btn btn-primary" onClick={props.handleShowForm}>Show Form</button>
+							&nbsp;
+							<button type="button" className="btn btn-primary" onClick={props.handleRandom}>Random</button>
+						</Fragment>
+					}
 
-						{this.props.showResults && 
-							<Fragment>
-								<button type="button" className="btn btn-primary" onClick={this.props.handleShowForm}>Show Form</button>
-								&nbsp;
-								<button type="button" className="btn btn-primary" onClick={this.props.handleRandom}>Random</button>
-							</Fragment>
-						}
+					{props.showRecipe && 
+						<Fragment>
+							<button type="button" className="btn btn-primary" onClick={props.handleShowResults}>Back To Results</button>
+							&nbsp;
+							<button type="button" className="btn btn-primary" onClick={props.handleShowForm}>Show Form</button>
+							&nbsp;
+							<button type="button" className="btn btn-primary" onClick={props.handleEdit}>Edit</button>
+							&nbsp;
+							<button type="button" className="btn btn-primary" onClick={props.handleBookmark}>Bookmark</button>
+							&nbsp;
+							<button type="button" className="btn btn-primary" onClick={props.sendEmail}>Email</button>
+						</Fragment>
+					}
 
-						{this.props.showRecipe && 
-							<Fragment>
-								<button type="button" className="btn btn-primary" onClick={this.props.handleShowResults}>Back To Results</button>
-								&nbsp;
-								<button type="button" className="btn btn-primary" onClick={this.props.handleShowForm}>Show Form</button>
-								&nbsp;
-								<button type="button" className="btn btn-primary" onClick={this.props.handleEdit}>Edit</button>
-								&nbsp;
-								<button type="button" className="btn btn-primary" onClick={this.props.handleBookmark}>Bookmark</button>
-								&nbsp;
-								<button type="button" className="btn btn-primary" onClick={this.props.sendEmail}>Email</button>
-							</Fragment>
-						}
-
-					</div>
 				</div>
-				<br /><br />
-			</Fragment>
-		)
-	}
+			</div>
+			<br /><br />
+		</Fragment>
+	);
 	/****************************************/
 
 }
 /**************************************************************************************/
 
+export default Buttons;

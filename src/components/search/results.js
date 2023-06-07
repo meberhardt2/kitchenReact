@@ -3,21 +3,21 @@ import React from 'react';
 import Result from 'components/search/result';
 
 /**************************************************************************************/
-export default class Results extends React.Component {
+function Results(props) {
 
 	/****************************************/
-	render(){
-		return(
-			<div className="results-holder">
-				<h4>Total: {this.props.results.length}</h4>
-				<br />
-				{this.props.results.map((result,index) =>
-					<Result key={result.id} result={result} viewRecipe={this.props.viewRecipe} />
-				)}
-			</div>
-		)
-	}
+	return(
+		<div className="results-holder">
+			<h4>Total: {props.results.length}</h4>
+			<br />
+			{props.results.map((result,index) =>
+				<Result key={result.id} result={result} viewRecipe={props.viewRecipe} />
+			)}
+		</div>
+	);
 	/****************************************/
 
 }
 /**************************************************************************************/
+
+export default Results;

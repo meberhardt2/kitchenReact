@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { useNavigate } from "react-router-dom";
 
 import API from 'api/api';
 import Form from 'components/search/form';
@@ -10,68 +11,59 @@ import { compareForObjectsTag } from 'components/common/utilities';
 import Email from 'components/search/email';
 
 /**************************************************************************************/
-export default class Search extends React.Component {
+function Search() {
 
 	/****************************************/
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			email: '',
-			recipe_name: '',
-			ingredients: '',
-			tags: [],
-			all_tags: [],
-			results: [],
-			all_tags_immutable: [],
-			recipe: {},
-			showForm: true,
-			showResults: false,
-			showRecipe: false,
-			showEmail: false
-		}
-
-		this.handleInputChange = this.handleInputChange.bind(this);
-		this.addTag = this.addTag.bind(this);
-		this.removeTag = this.removeTag.bind(this);
-		this.handleSearch = this.handleSearch.bind(this);
-		this.handleShowForm = this.handleShowForm.bind(this);
-		this.viewRecipe = this.viewRecipe.bind(this);
-		this.handleShowResults = this.handleShowResults.bind(this);
-		this.handleBookmark = this.handleBookmark.bind(this);
-		this.handleEdit = this.handleEdit.bind(this);
-		this.handleRandom = this.handleRandom.bind(this);
-		this.sendEmail = this.sendEmail.bind(this);
-		this.sendEmailForReals = this.sendEmailForReals.bind(this);
-		this.cancelEmail = this.cancelEmail.bind(this);
-	}
+	let navigate = useNavigate();
+	
+	const [state, setValues] = useState({
+		email: '',
+		recipe_name: '',
+		ingredients: '',
+		tags: [],
+		all_tags: [],
+		results: [],
+		all_tags_immutable: [],
+		recipe: {},
+		showForm: true,
+		showResults: false,
+		showRecipe: false,
+		showEmail: false
+	});
 	/****************************************/
 
 
 	/****************************************/
-	componentDidMount(){
+	useEffect(() => {
 		document.getElementById('spinner-holder').style.display = 'block';
 
 		API.getTags().then((data) => {
+			let tempState = JSON.parse(JSON.stringify(state));
+			tempState.all_tags = data;
+			tempState.all_tags_immutable = data;
+
 			document.getElementById('spinner-holder').style.display = 'none';
 
-			this.setState({
-				all_tags: data,
+			setValues({
+				...state, 
+				all_tags: data, 
 				all_tags_immutable: data
 			});
 		});
-	}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	},[]);	
 	/****************************************/
 
 
 	/****************************************/
-	handleInputChange(event) {
+	const handleInputChange = (event) => {
 		const target = event.target;
 		const name = target.name;
 		let value = target.value;
 
 
-		this.setState({
+		setValues({
+			...state,
 			[name]: value
 		});
 	}
@@ -79,11 +71,12 @@ export default class Search extends React.Component {
 
 
 	/****************************************/
-	handleRandom(){
+	const handleRandom = () =>{
 		API.random().then((data) => {
 			document.getElementById('spinner-holder').style.display = 'none';
 
-			this.setState({
+			setValues({
+				...state,
 				showForm: false,
 				showResults: true,
 				results: data
@@ -94,8 +87,8 @@ export default class Search extends React.Component {
 	
 
 	/****************************************/
-	handleSearch(){
-		let tempState = JSON.parse(JSON.stringify(this.state));
+	const handleSearch = () =>{
+		let tempState = JSON.parse(JSON.stringify(state));
 
 		let data = {
 			recipe_name: tempState.recipe_name,
@@ -108,7 +101,8 @@ export default class Search extends React.Component {
 		API.search(data).then((data) => {
 			document.getElementById('spinner-holder').style.display = 'none';
 
-			this.setState({
+			setValues({
+				...state,
 				showForm: false,
 				showResults: true,
 				results: data
@@ -119,9 +113,10 @@ export default class Search extends React.Component {
 
 
 	/****************************************/
-	handleShowForm(){
+	const handleShowForm = () =>{
 		window.scrollTo(0,0);
-		this.setState({
+		setValues({
+			...state,
 			showResults: false,
 			showForm: true,
 			showRecipe: false
@@ -131,9 +126,10 @@ export default class Search extends React.Component {
 
 
 	/****************************************/
-	handleShowResults(){
+	const handleShowResults = () =>{
 		window.scrollTo(0,0);
-		this.setState({
+		setValues({
+			...state,
 			showResults: true,
 			showRecipe: false
 		});
@@ -142,8 +138,8 @@ export default class Search extends React.Component {
 
 
 	/****************************************/
-	removeTag(tag){
-		let tempState = JSON.parse(JSON.stringify(this.state));
+	const removeTag = (tag) =>{
+		let tempState = JSON.parse(JSON.stringify(state));
 		let tempAllTags = tempState.all_tags.slice(0);
 		let tempTags = tempState.tags.slice(0);
 		let indexOfTagToDelete = -1;
@@ -165,7 +161,8 @@ export default class Search extends React.Component {
 
 		tempAllTags.sort(compareForObjectsTag);
 
-		this.setState({
+		setValues({
+			...state,
 			all_tags: tempAllTags,
 			tags: tempTags
 		});
@@ -174,8 +171,8 @@ export default class Search extends React.Component {
 
 
 	/****************************************/
-	addTag(tag){
-		let tempState = JSON.parse(JSON.stringify(this.state));
+	const addTag = (tag) =>{
+		let tempState = JSON.parse(JSON.stringify(state));
 		let tempAllTags = tempState.all_tags.slice(0);
 		let tempTags = tempState.tags.slice(0);
 		let indexOfTagToDelete = -1;
@@ -197,7 +194,8 @@ export default class Search extends React.Component {
 
 		tempTags.sort(compareForObjectsTag);
 
-		this.setState({
+		setValues({
+			...state,
 			all_tags: tempAllTags,
 			tags: tempTags
 		});
@@ -206,14 +204,15 @@ export default class Search extends React.Component {
 
 
 	/****************************************/
-	viewRecipe(id){
+	const viewRecipe = (id) =>{
 		window.scrollTo(0,0);
 		document.getElementById('spinner-holder').style.display = 'block';
 
 		API.getRecipe(id).then((data) => {
 			document.getElementById('spinner-holder').style.display = 'none';
 
-			this.setState({
+			setValues({
+				...state,
 				showRecipe: true,
 				showResults: false,
 				recipe: data
@@ -224,11 +223,11 @@ export default class Search extends React.Component {
 
 
 	/****************************************/
-	handleBookmark(){
+	const handleBookmark = () =>{
 		document.getElementById('spinner-holder').style.display = 'block';
 
 		let data = {
-			id: this.state.recipe.id
+			id: state.recipe.id
 		};
 
 		API.addBookmark(data).then((data) => {
@@ -247,15 +246,16 @@ export default class Search extends React.Component {
 
 
 	/****************************************/
-	handleEdit(){
-		this.props.history.push('/recipe/'+this.state.recipe.id);
+	const handleEdit = () =>{
+		navigate('/recipe/'+state.recipe.id);
 	}
 	/****************************************/
 
 
 	/****************************************/
-	cancelEmail(){
-		this.setState({
+	const cancelEmail = () =>{
+		setValues({
+			...state,
 			showEmail: false
 		});
 	}
@@ -263,8 +263,9 @@ export default class Search extends React.Component {
 
 
 	/****************************************/
-	sendEmail(){
-		this.setState({
+	const sendEmail = () =>{
+		setValues({
+			...state,
 			showEmail: true
 		});
 	}
@@ -272,8 +273,8 @@ export default class Search extends React.Component {
 
 
 	/****************************************/
-	sendEmailForReals(){
-		let tempState = JSON.parse(JSON.stringify(this.state));
+	const sendEmailForReals = () =>{
+		let tempState = JSON.parse(JSON.stringify(state));
 
 		let data = {
 			email: tempState.email,
@@ -284,7 +285,8 @@ export default class Search extends React.Component {
 		API.gmail(data).then((data) => {
 			document.getElementById('spinner-holder').style.display = 'none';
 
-			this.setState({
+			setValues({
+				...state,
 				showEmail: false
 			});
 
@@ -302,32 +304,32 @@ export default class Search extends React.Component {
 
 
 	/****************************************/
-	render(){
-		return(
-			<Fragment>
-				
-				<Buttons sendEmail={this.sendEmail} handleRandom={this.handleRandom} handleBookmark={this.handleBookmark} handleEdit={this.handleEdit} handleSearch={this.handleSearch} handleShowResults={this.handleShowResults} handleShowForm={this.handleShowForm} showForm={this.state.showForm} showResults={this.state.showResults} showRecipe={this.state.showRecipe} />
+	return(
+		<Fragment>
+			
+			<Buttons sendEmail={sendEmail} handleRandom={handleRandom} handleBookmark={handleBookmark} handleEdit={handleEdit} handleSearch={handleSearch} handleShowResults={handleShowResults} handleShowForm={handleShowForm} showForm={state.showForm} showResults={state.showResults} showRecipe={state.showRecipe} />
 
-				<div className={this.state.showForm  ? '' : 'hidden'} >
-					<Form handleInputChange={this.handleInputChange} {...this.state} addTag={this.addTag} removeTag={this.removeTag} />
-				</div>
+			<div className={state.showForm  ? '' : 'hidden'} >
+				<Form handleInputChange={handleInputChange} {...state} addTag={addTag} removeTag={removeTag} />
+			</div>
 
-				<div className={this.state.showResults  ? '' : 'hidden'} >
-					<Results results={this.state.results} viewRecipe={this.viewRecipe} />
-				</div>
+			<div className={state.showResults  ? '' : 'hidden'} >
+				<Results results={state.results} viewRecipe={viewRecipe} />
+			</div>
 
-				<div className={this.state.showRecipe  ? '' : 'hidden'} >
-					<Recipe recipe={this.state.recipe} />
-				</div>
+			<div className={state.showRecipe  ? '' : 'hidden'} >
+				<Recipe recipe={state.recipe} />
+			</div>
 
-				<br /><br />
-				<Buttons sendEmail={this.sendEmail} handleRandom={this.handleRandom} handleBookmark={this.handleBookmark} handleEdit={this.handleEdit} handleSearch={this.handleSearch} handleShowResults={this.handleShowResults} handleShowForm={this.handleShowForm} showForm={this.state.showForm} showResults={this.state.showResults} showRecipe={this.state.showRecipe} />
+			<br /><br />
+			<Buttons sendEmail={sendEmail} handleRandom={handleRandom} handleBookmark={handleBookmark} handleEdit={handleEdit} handleSearch={handleSearch} handleShowResults={handleShowResults} handleShowForm={handleShowForm} showForm={state.showForm} showResults={state.showResults} showRecipe={state.showRecipe} />
 
-				<Email sendEmailForReals={this.sendEmailForReals} email={this.state.email} showEmail={this.state.showEmail} cancelEmail={this.cancelEmail} handleInputChange={this.handleInputChange} />
-			</Fragment>
-		)
-	}
+			<Email sendEmailForReals={sendEmailForReals} email={state.email} showEmail={state.showEmail} cancelEmail={cancelEmail} handleInputChange={handleInputChange} />
+		</Fragment>
+	);
 	/****************************************/
 
 }
 /**************************************************************************************/
+
+export default Search;

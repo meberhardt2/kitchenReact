@@ -2,24 +2,23 @@ import React, { Fragment } from 'react';
 
 
 /**************************************************************************************/
-export default class Buttons extends React.Component {
+function Buttons(props) {
 
 	/****************************************/
-	render(){
-		return(
-			<Fragment>
-				<div className="row button-row">
-					<div className="col-12">
-						<button type="button" className="btn btn-primary" onClick={this.props.addRecipe}>Add</button>
-						<button type="button" className="btn btn-primary" onClick={this.props.backToUpload}>Back To Upload</button>
-					</div>
+	return(
+		<Fragment>
+			<div className="row button-row">
+				<div className="col-12">
+					<button type="button" className="btn btn-primary" onClick={props.addRecipe}>Add</button>
+					<button type="button" className="btn btn-primary" onClick={props.backToUpload}>Back To Upload</button>
 				</div>
-				<br /><br />
-			</Fragment>
-		)
-	}
+			</div>
+			<br /><br />
+		</Fragment>
+	);
 	/****************************************/
 
 }
 /**************************************************************************************/
 
+export default Buttons;

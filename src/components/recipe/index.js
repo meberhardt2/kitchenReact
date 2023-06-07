@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
+import { useParams } from 'react-router-dom';
 
 import API from 'api/api';
 import Form from 'components/recipe/form';
@@ -8,69 +9,60 @@ import { compareForObjectsTag } from 'components/common/utilities';
 import DeleteModal from 'components/common/modal_delete';
 
 /**************************************************************************************/
-export default class Recipe extends React.Component {
+function Recipe() {
 
-	/****************************************/
-	constructor(props) {
-		super(props);
+    /****************************************/
+	let { id } = useParams();
 
-		this.state = {
-			id: 0,
-			recipe_name: '',
-			recipe: '',
-			bookmarked: 'n',
-			ingredients: '',
-			tags: [],
-			all_tags: [],
-			all_tags_immutable: [],
-			showModal: false,
-			delete_id: 0,
-			modalAction: ''
-		}
-
-		this.handleInputChange = this.handleInputChange.bind(this);
-		this.getRecipe = this.getRecipe.bind(this);
-		this.addTag = this.addTag.bind(this);
-		this.removeTag = this.removeTag.bind(this);
-		this.addRecipe = this.addRecipe.bind(this);
-		this.saveRecipe = this.saveRecipe.bind(this);
-		this.modalAction = this.modalAction.bind(this);
-		this.closeModal = this.closeModal.bind(this);
-		this.handleModal = this.handleModal.bind(this);
-	}
+	const [state, setValues] = useState({
+		id: 0,
+		recipe_name: '',
+		recipe: '',
+		bookmarked: 'n',
+		ingredients: '',
+		tags: [],
+		all_tags: [],
+		all_tags_immutable: [],
+		showModal: false,
+		delete_id: 0,
+		modalAction: ''
+	});
 	/****************************************/
 
 
 	/****************************************/
-	componentDidMount(){
+	useEffect(() => {
 		document.getElementById('spinner-holder').style.display = 'block';
 
 		API.getTags().then((data) => {
-			this.setState({
+			setValues({
+				...state,
 				all_tags: data,
 				all_tags_immutable: data
-			},function(){
-				if(parseInt(this.props.match.params.id,0) !== 0){
-					this.getRecipe(this.props.match.params.id);
-				}
-				else{
-					document.getElementById('spinner-holder').style.display = 'none';
-				}	
 			});
+
+			if(parseInt(id,0) !== 0){
+				getRecipe(id);
+			}
+			else{
+				document.getElementById('spinner-holder').style.display = 'none';
+			}	
 		});
-	}
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	},[]);	
 	/****************************************/
 
 
 	/****************************************/
-	getRecipe(id){
+	const getRecipe = (id) =>{
 		//remember to remove assigned tags from all tags
 		API.getRecipe(id).then((data) => {
 			for(let i = 0; i < data.tags.length; i++){
-				this.addTag(data.tags[i]);
+				addTag(data.tags[i]);
 			}
 
-			this.setState({
+			setValues({
+				...state,
 				id: data.id,
 				recipe_name: data.recipe_name,
 				recipe: data.recipe,
@@ -86,7 +78,7 @@ export default class Recipe extends React.Component {
 
 
 	/****************************************/
-	handleInputChange(event) {
+	const handleInputChange = (event) =>{
 		const target = event.target;
 		const name = target.name;
 		let value = '';
@@ -103,7 +95,8 @@ export default class Recipe extends React.Component {
 			value = target.value;
 		}
 
-		this.setState({
+		setValues({
+			...state,
 			[name]: value
 		});
 	}
@@ -111,8 +104,8 @@ export default class Recipe extends React.Component {
 
 
 	/****************************************/
-	addTag(tag){
-		let tempState = JSON.parse(JSON.stringify(this.state));
+	const addTag = (tag) =>{
+		let tempState = JSON.parse(JSON.stringify(state));
 		let tempAllTags = tempState.all_tags.slice(0);
 		let tempTags = tempState.tags.slice(0);
 		let indexOfTagToDelete = -1;
@@ -134,7 +127,8 @@ export default class Recipe extends React.Component {
 
 		tempTags.sort(compareForObjectsTag);
 
-		this.setState({
+		setValues({
+			...state,
 			all_tags: tempAllTags,
 			tags: tempTags
 		});
@@ -143,8 +137,8 @@ export default class Recipe extends React.Component {
 
 
 	/****************************************/
-	removeTag(tag){
-		let tempState = JSON.parse(JSON.stringify(this.state));
+	const removeTag = (tag) =>{
+		let tempState = JSON.parse(JSON.stringify(state));
 		let tempAllTags = tempState.all_tags.slice(0);
 		let tempTags = tempState.tags.slice(0);
 		let indexOfTagToDelete = -1;
@@ -166,7 +160,8 @@ export default class Recipe extends React.Component {
 
 		tempAllTags.sort(compareForObjectsTag);
 
-		this.setState({
+		setValues({
+			...state,
 			all_tags: tempAllTags,
 			tags: tempTags
 		});
@@ -175,26 +170,26 @@ export default class Recipe extends React.Component {
 
 	
 	/****************************************/
-	addRecipe(){
-		let tempState = JSON.parse(JSON.stringify(this.state));
+	const addRecipe = () =>{
+		let tempState = JSON.parse(JSON.stringify(state));
 		let errors = false;
 		
-		if(this.state.recipe_name === ''){
+		if(state.recipe_name === ''){
 			errors = true;
 			toast.error('Missing recipe name');
 		}
 
-		if(this.state.recipe === ''){
+		if(state.recipe === ''){
 			errors = true;
 			toast.error('Missing recipe');
 		}
 
-		if(this.state.tags.length === 0){
+		if(state.tags.length === 0){
 			errors = true;
 			toast.error('Missing tag(s)');
 		}
 
-		if(this.state.ingredients === ''){
+		if(state.ingredients === ''){
 			errors = true;
 			toast.error('Missing ingrediants');
 		}
@@ -220,7 +215,8 @@ export default class Recipe extends React.Component {
 						if(parseInt(data.id) !== 0){
 							toast.success('Recipe added!');
 
-							this.setState({
+							setValues({
+								...state,
 								recipe_name: '',
 								recipe: '',
 								bookmarked: 'n',
@@ -241,26 +237,26 @@ export default class Recipe extends React.Component {
 
 
 	/****************************************/
-	saveRecipe(){
-		let tempState = JSON.parse(JSON.stringify(this.state));
+	const saveRecipe = () =>{
+		let tempState = JSON.parse(JSON.stringify(state));
 		let errors = false;
 		
-		if(this.state.recipe_name === ''){
+		if(state.recipe_name === ''){
 			errors = true;
 			toast.error('Missing recipe name');
 		}
 
-		if(this.state.recipe === ''){
+		if(state.recipe === ''){
 			errors = true;
 			toast.error('Missing recipe');
 		}
 
-		if(this.state.tags.length === 0){
+		if(state.tags.length === 0){
 			errors = true;
 			toast.error('Missing tag(s)');
 		}
 
-		if(this.state.ingredients === ''){
+		if(state.ingredients === ''){
 			errors = true;
 			toast.error('Missing ingrediants');
 		}
@@ -294,8 +290,9 @@ export default class Recipe extends React.Component {
 
 
 	/****************************************/
-	handleModal(action,id){
-		this.setState({
+	const handleModal = (action,id) =>{
+		setValues({
+			...state,
 			showModal: true,
 			modalAction: action,
 		});
@@ -304,8 +301,9 @@ export default class Recipe extends React.Component {
 
 
 	/****************************************/
-	closeModal(){
-		this.setState({
+	const closeModal = () =>{
+		setValues({
+			...state,
 			showModal: false
 		});
 	}
@@ -313,10 +311,11 @@ export default class Recipe extends React.Component {
 
 
 	/****************************************/
-	modalAction(){
-		let tempState = JSON.parse(JSON.stringify(this.state));
+	const modalAction = () =>{
+		let tempState = JSON.parse(JSON.stringify(state));
 
-		this.setState({
+		setValues({
+			...state,
 			showModal: false
 		});
 
@@ -330,7 +329,8 @@ export default class Recipe extends React.Component {
 			}
 			else{
 				if(data.status === 'ok'){
-					this.setState({
+					setValues({
+						...state,
 						id: 0,
 						recipe_name: '',
 						recipe: '',
@@ -349,26 +349,26 @@ export default class Recipe extends React.Component {
 
 
 	/****************************************/
-	render(){
-		return(
-			<Fragment>
-				
-				<Buttons id={this.state.id} addRecipe={this.addRecipe} saveRecipe={this.saveRecipe} handleModal={this.handleModal} />
+	return(
+		<Fragment>
+			
+			<Buttons id={state.id} addRecipe={addRecipe} saveRecipe={saveRecipe} handleModal={handleModal} />
 
-				<Form handleInputChange={this.handleInputChange} {...this.state} addTag={this.addTag} removeTag={this.removeTag} />
+			<Form handleInputChange={handleInputChange} {...state} addTag={addTag} removeTag={removeTag} />
 
-				<Buttons id={this.state.id} addRecipe={this.addRecipe} saveRecipe={this.saveRecipe} handleModal={this.handleModal} />
+			<Buttons id={state.id} addRecipe={addRecipe} saveRecipe={saveRecipe} handleModal={handleModal} />
 
-				<DeleteModal
-					showModal={this.state.showModal}
-					closeModal={this.closeModal}
-					modalAction={this.modalAction}
-				/>
+			<DeleteModal
+				showModal={state.showModal}
+				closeModal={closeModal}
+				modalAction={modalAction}
+			/>
 
-			</Fragment>
-		)
-	}
+		</Fragment>
+	);
 	/****************************************/
 
 }
 /**************************************************************************************/
+
+export default Recipe;

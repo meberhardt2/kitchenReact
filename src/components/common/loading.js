@@ -1,16 +1,16 @@
 import React from 'react';
 
 /**************************************************************************************/
-export default class Loading extends React.Component{
+function Loading(){
 
 	/********************************************/
-	render(){
-		return(
-			<span>
-				Loading...
-			</span>
-		);
-	}
+	return(
+		<span>
+			Loading...
+		</span>
+	);
 	/********************************************/	
 }
 /**************************************************************************************/
+
+export default Loading;

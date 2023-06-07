@@ -4,45 +4,35 @@ import del from 'images/trash.png';
 import edit from 'images/edit.png';
 
 /**************************************************************************************/
-export default class Tag extends React.Component {
+function Tag(props){
 
 	/****************************************/
-	constructor(props) {
-		super(props);
-
-		this.handleModal = this.handleModal.bind(this);
-		this.handleShowEdit = this.handleShowEdit.bind(this);
+	const handleModal = () =>{
+		props.handleModal('delete_tag',props.tag.id);
 	}
 	/****************************************/
 
 
 	/****************************************/
-	handleModal(){
-		this.props.handleModal('delete_tag',this.props.tag.id);
+	const handleShowEdit = () =>{
+		props.handleShowEdit(props.tag);
 	}
 	/****************************************/
 
 
 	/****************************************/
-	handleShowEdit(){
-		this.props.handleShowEdit(this.props.tag);
-	}
-	/****************************************/
-
-
-	/****************************************/
-	render(){
-		return(
-			<div className="row">
-				<div className="col-12">
-					<button className="btn button-icon"><img src={del} alt="delete" onClick={this.handleModal} /></button>
-					<button className="btn button-icon"><img src={edit} alt="edit" onClick={this.handleShowEdit} /></button>
-					<span className="tag-name">{this.props.tag.tag}</span>
-				</div>
+	return(
+		<div className="row">
+			<div className="col-12">
+				<button className="btn button-icon"><img src={del} alt="delete" onClick={handleModal} /></button>
+				<button className="btn button-icon"><img src={edit} alt="edit" onClick={handleShowEdit} /></button>
+				<span className="tag-name">{props.tag.tag}</span>
 			</div>
-		)
-	}
+		</div>
+	);
 	/****************************************/
 
 }
 /**************************************************************************************/
+
+export default Tag;

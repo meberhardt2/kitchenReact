@@ -1,20 +1,20 @@
 import React,{ Fragment } from 'react';
 
 /**************************************************************************************/
-export default class UploadForm extends React.Component {
+function UploadForm(props) {
 
 	/****************************************/
-	render(){
-		return(
-			<Fragment>
-				<br /><br />
-				<div className="row">
-					<div className="col-12">Image:&nbsp;&nbsp;&nbsp;&nbsp;<input name="imagefile" id="imagefile" type="file" onChange={this.props.handleUpload} /></div>
-				</div>
-			</Fragment>
-		)
-	}
+	return(
+		<Fragment>
+			<br /><br />
+			<div className="row">
+				<div className="col-12">Image:&nbsp;&nbsp;&nbsp;&nbsp;<input name="imagefile" id="imagefile" type="file" onChange={props.handleUpload} /></div>
+			</div>
+		</Fragment>
+	);
 	/****************************************/
 
 }
 /**************************************************************************************/
+
+export default UploadForm

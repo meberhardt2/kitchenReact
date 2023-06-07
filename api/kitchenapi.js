@@ -27,7 +27,7 @@ if(ip.includes("10.192.")){
 }
 else{
     const http = require('http');
-    http.createServer(app).listen(4000);
+    http.createServer(app).listen(4100);
 	/*
 	const https = require('https');
     const sslOptions = {

@@ -2,26 +2,25 @@ import React from 'react';
 
 import Modal from 'components/common/modal';
 
-
 /*******************************************************************************/
-export default class DeleteModal extends React.Component {
+function DeleteModal(props) {
 
 	/****************************************/
-	render() {
-		return (
-			<Modal 
-				showModal={this.props.showModal}
-				title="Confirmation"
-				body="Proceed with deletion?"
-				primaryText="Delete"
-				primaryAction={this.props.modalAction}
-				primaryStyle="btn-danger"
-				secondaryText="Cancel"
-				secondaryAction={this.props.closeModal}
-				secondaryStyle="btn-secondary"
-			/>
-		);
-	}
+	return (
+		<Modal 
+			showModal={props.showModal}
+			title="Confirmation"
+			body="Proceed with deletion?"
+			primaryText="Delete"
+			primaryAction={props.modalAction}
+			primaryStyle="btn-danger"
+			secondaryText="Cancel"
+			secondaryAction={props.closeModal}
+			secondaryStyle="btn-secondary"
+		/>
+	);
 	/****************************************/
 }
 /*******************************************************************************/
+
+export default DeleteModal;

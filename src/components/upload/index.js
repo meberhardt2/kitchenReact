@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState } from 'react';
 import { toast } from 'react-toastify';
 
 import API from 'api/api';
@@ -7,35 +7,28 @@ import UploadForm from 'components/upload/upload_form';
 import Buttons from 'components/upload/buttons'
 
 /**************************************************************************************/
-export default class Upload extends React.Component {
+function Upload() {
 
 	/****************************************/
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			showForm: false,
-			showUpload: true,
-			image: '',
-			recipe: '',
-			recipe_name: ''
-		}
-
-		this.handleInputChange = this.handleInputChange.bind(this);
-		this.addRecipe = this.addRecipe.bind(this);
-		this.handleUpload = this.handleUpload.bind(this);
-	}
+	const [state, setValues] = useState({
+		showForm: false,
+		showUpload: true,
+		image: '',
+		recipe: '',
+		recipe_name: ''
+	});
 	/****************************************/
 
 
 	/****************************************/
-	handleInputChange(event) {
+	const handleInputChange = (event) =>{
 		const target = event.target;
 		const name = target.name;
 		let value = target.value;
 
 
-		this.setState({
+		setValues({
+			...state,
 			[name]: value
 		});
 	}
@@ -43,8 +36,9 @@ export default class Upload extends React.Component {
 
 
 	/****************************************/
-	backToUpload(){
-		this.setState({
+	const backToUpload = () =>{
+		setValues({
+			...state,
 			recipe_name: '',
 			recipe: '',
 			showUpload: true,
@@ -55,7 +49,7 @@ export default class Upload extends React.Component {
 
 
 	/****************************************/
-	handleUpload(event){
+	const handleUpload = (event) =>{
 		let fileInput = '';
 		fileInput = document.getElementById('imagefile');
 
@@ -73,7 +67,8 @@ export default class Upload extends React.Component {
 			}
 			else{
 				if(data.status === 'ok'){
-					this.setState({
+					setValues({
+						...state,
 						recipe:data.text,
 						showUpload: false,
 						showForm: true
@@ -86,16 +81,16 @@ export default class Upload extends React.Component {
 
 
 	/****************************************/
-	addRecipe(){
-		let tempState = JSON.parse(JSON.stringify(this.state));
+	const addRecipe = () =>{
+		let tempState = JSON.parse(JSON.stringify(state));
 		let errors = false;
 		
-		if(this.state.recipe_name === ''){
+		if(state.recipe_name === ''){
 			errors = true;
 			toast.error('Missing recipe name');
 		}
 
-		if(this.state.recipe === ''){
+		if(state.recipe === ''){
 			errors = true;
 			toast.error('Missing recipe');
 		}
@@ -122,7 +117,8 @@ export default class Upload extends React.Component {
 						if(parseInt(data.id) !== 0){
 							toast.success('Recipe added!');
 
-							this.setState({
+							setValues({
+								...state,
 								recipe_name: '',
 								recipe: '',
 								showCamera: true,
@@ -141,24 +137,24 @@ export default class Upload extends React.Component {
 
 
 	/****************************************/
-	render(){
-		return(
-			<Fragment>
-				<div className={this.state.showUpload  ? '' : 'hidden'} >
-					<UploadForm handleUpload={this.handleUpload} />
-				</div>
+	return(
+		<Fragment>
+			<div className={state.showUpload  ? '' : 'hidden'} >
+				<UploadForm handleUpload={handleUpload} />
+			</div>
 
-				<div className={this.state.showForm  ? '' : 'hidden'} >
-					<Buttons addRecipe={this.addRecipe} backToUpload={this.backToUpload} />
+			<div className={state.showForm  ? '' : 'hidden'} >
+				<Buttons addRecipe={addRecipe} backToUpload={backToUpload} />
 
-					<Form handleInputChange={this.handleInputChange} recipe={this.state.recipe} recipe_name={this.state.recipe_name} />
+				<Form handleInputChange={handleInputChange} recipe={state.recipe} recipe_name={state.recipe_name} />
 
-					<Buttons addRecipe={this.addRecipe} backToUpload={this.backToUpload} />
-				</div>
-			</Fragment>
-		)
-	}
+				<Buttons addRecipe={addRecipe} backToUpload={backToUpload} />
+			</div>
+		</Fragment>
+	);
 	/****************************************/
 
 }
 /**************************************************************************************/
+
+export default Upload;

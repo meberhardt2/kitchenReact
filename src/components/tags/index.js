@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useState, useEffect } from 'react';
 import { toast } from 'react-toastify';
 
 import API from 'api/api';
@@ -8,51 +8,38 @@ import Edit from 'components/tags/edit';
 import DeleteModal from 'components/common/modal_delete';
 
 /**************************************************************************************/
-export default class TagIndex extends React.Component {
+function TagIndex() {
 
 	/****************************************/
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			tags: [],
-			tag: {},
-			new_tag: '',
-			showModal: false,
-			showEdit: false,
-			delete_id: 0,
-			modalAction: ''
-		}
-
-		this.handleNewTag = this.handleNewTag.bind(this);
-		this.handleAdd = this.handleAdd.bind(this);
-		this.getTags = this.getTags.bind(this);
-		this.modalAction = this.modalAction.bind(this);
-		this.closeModal = this.closeModal.bind(this);
-		this.handleModal = this.handleModal.bind(this);
-		this.handleEditTag = this.handleEditTag.bind(this);
-		this.handleShowEdit = this.handleShowEdit.bind(this);
-		this.handleCancelEdit = this.handleCancelEdit.bind(this);
-		this.handleUpdate = this.handleUpdate.bind(this);
-	}
+	const [state, setValues] = useState({
+		tags: [],
+		tag: {},
+		new_tag: '',
+		showModal: false,
+		showEdit: false,
+		delete_id: 0,
+		modalAction: ''
+	});
 	/****************************************/
 
 
 	/****************************************/
-	componentDidMount(){
-		this.getTags();
-	}
+	useEffect(() => {
+		getTags();
+		// eslint-disable-next-line react-hooks/exhaustive-deps
+	},[]);	
 	/****************************************/
 
 	
 	/****************************************/
-	getTags(){
+	const getTags = () =>{
 		document.getElementById('spinner-holder').style.display = 'block';
 
 		API.getTags().then((data) => {
 			document.getElementById('spinner-holder').style.display = 'none';
 
-			this.setState({
+			setValues({
+				...state,
 				tags: data
 			});
 		});
@@ -61,8 +48,9 @@ export default class TagIndex extends React.Component {
 
 
 	/****************************************/
-	handleShowEdit(tag){
-		this.setState({
+	const handleShowEdit = (tag) =>{
+		setValues({
+			...state,
 			tag: tag,
 			showEdit: true
 		});
@@ -71,8 +59,9 @@ export default class TagIndex extends React.Component {
 
 
 	/****************************************/
-	handleCancelEdit(){
-		this.setState({
+	const handleCancelEdit = () =>{
+		setValues({
+			...state,
 			showEdit: false
 		});
 	}
@@ -80,15 +69,16 @@ export default class TagIndex extends React.Component {
 
 
 	/****************************************/
-	handleEditTag(event) {
-		let tempState = JSON.parse(JSON.stringify(this.state));
+	const handleEditTag = (event) =>{
+		let tempState = JSON.parse(JSON.stringify(state));
 		let tempTag = tempState.tag;
 		const target = event.target;
 		let value = target.value;
 
 		tempTag.tag = value;
 
-		this.setState({
+		setValues({
+			...state,
 			tag: tempTag
 		});
 	}
@@ -96,10 +86,10 @@ export default class TagIndex extends React.Component {
 
 
 	/****************************************/
-	handleUpdate(){
+	const handleUpdate = () =>{
 		document.getElementById('spinner-holder').style.display = 'block';
 
-		API.updateTag(this.state.tag).then((data) => {
+		API.updateTag(state.tag).then((data) => {
 			document.getElementById('spinner-holder').style.display = 'none';
 
 			if(typeof data === 'undefined' || typeof data.status === 'undefined' || data.status === 'forbidden'){
@@ -107,7 +97,7 @@ export default class TagIndex extends React.Component {
 			}
 			else{
 				if(data.status === 'ok'){
-					let tempState = JSON.parse(JSON.stringify(this.state));
+					let tempState = JSON.parse(JSON.stringify(state));
 					let tempTags = tempState.tags.slice(0);
 
 					for(let i = 0; i < tempTags.length; i++){
@@ -118,7 +108,8 @@ export default class TagIndex extends React.Component {
 
 					tempTags.sort(compareForObjectsTag);
 
-					this.setState({
+					setValues({
+						...state,
 						tags: tempTags,
 						tag: {},
 						showEdit: false
@@ -131,12 +122,13 @@ export default class TagIndex extends React.Component {
 
 
 	/****************************************/
-	handleNewTag(event) {
+	const handleNewTag = (event) =>{
 		const target = event.target;
 		const name = target.name;
 		let value = target.value;
 
-		this.setState({
+		setValues({
+			...state,
 			[name]: value
 		});
 	}
@@ -144,8 +136,8 @@ export default class TagIndex extends React.Component {
 
 
 	/****************************************/
-	handleAdd(){
-		let tempState = JSON.parse(JSON.stringify(this.state));
+	const handleAdd = () =>{
+		let tempState = JSON.parse(JSON.stringify(state));
 
 		if(tempState.new_tag.length === 0){
 			toast.error('Tag can\'t be empty');
@@ -174,7 +166,8 @@ export default class TagIndex extends React.Component {
 
 							tempTags.sort(compareForObjectsTag);
 
-							this.setState({
+							setValues({
+								...state,
 								tags: tempTags,
 								new_tag: ''
 							});
@@ -190,8 +183,9 @@ export default class TagIndex extends React.Component {
 
 
 	/****************************************/
-	handleModal(action,id){
-		this.setState({
+	const handleModal = (action,id) =>{
+		setValues({
+			...state,
 			showModal: true,
 			modalAction: action,
 			delete_id: id
@@ -201,8 +195,9 @@ export default class TagIndex extends React.Component {
 
 
 	/****************************************/
-	closeModal(){
-		this.setState({
+	const closeModal = () =>{
+		setValues({
+			...state,
 			showModal: false
 		});
 	}
@@ -210,14 +205,15 @@ export default class TagIndex extends React.Component {
 
 
 	/****************************************/
-	modalAction(){
-		this.setState({
+	const modalAction = () =>{
+		setValues({
+			...state,
 			showModal: false
 		});
 
 		document.getElementById('spinner-holder').style.display = 'block';
 
-		API.deleteTag(this.state.delete_id).then((data) => {
+		API.deleteTag(state.delete_id).then((data) => {
 			document.getElementById('spinner-holder').style.display = 'none';
 
 			if(typeof data === 'undefined' || typeof data.status === 'undefined' || data.status === 'forbidden'){
@@ -225,7 +221,7 @@ export default class TagIndex extends React.Component {
 			}
 			else{
 				if(data.status === 'ok'){
-					let tempState = JSON.parse(JSON.stringify(this.state));
+					let tempState = JSON.parse(JSON.stringify(state));
 					let tempTags = tempState.tags.slice(0);
 					let indexOfTagToDelete = -1;
 
@@ -239,7 +235,8 @@ export default class TagIndex extends React.Component {
 						tempTags.splice(indexOfTagToDelete, 1);
 					}
 
-					this.setState({
+					setValues({
+						...state,
 						tags: tempTags
 					});
 
@@ -252,30 +249,30 @@ export default class TagIndex extends React.Component {
 
 
 	/****************************************/
-	render(){
-		return(
-			<Fragment>
+	return(
+		<Fragment>
 
-				<div className="row">
-					<div className="col-12 col-md-4"><input type="text" placeholder='New Tag' className="form-control" name="new_tag" onChange={this.handleNewTag} value={this.state.new_tag || ''} /></div>
-					<div className="col-12 col-md-1 button-row"><button type="button" className="btn btn-primary" onClick={this.handleAdd}>Add</button></div>
-				</div>
+			<div className="row">
+				<div className="col-12 col-md-4"><input type="text" placeholder='New Tag' className="form-control" name="new_tag" onChange={handleNewTag} value={state.new_tag || ''} /></div>
+				<div className="col-12 col-md-1 button-row"><button type="button" className="btn btn-primary" onClick={handleAdd}>Add</button></div>
+			</div>
 
-				<hr size="1" width="80%" />
+			<hr size="1" width="80%" />
 
-				<Edit tag={this.state.tag} showEdit={this.state.showEdit} handleEditTag={this.handleEditTag} handleCancelEdit={this.handleCancelEdit} handleUpdate={this.handleUpdate} />
+			<Edit tag={state.tag} showEdit={state.showEdit} handleEditTag={handleEditTag} handleCancelEdit={handleCancelEdit} handleUpdate={handleUpdate} />
 
-				<Tags tags={this.state.tags} handleModal={this.handleModal} handleShowEdit={this.handleShowEdit} />
+			<Tags tags={state.tags} handleModal={handleModal} handleShowEdit={handleShowEdit} />
 
-				<DeleteModal
-					showModal={this.state.showModal}
-					closeModal={this.closeModal}
-					modalAction={this.modalAction}
-				/>
-			</Fragment>
-		)
-	}
+			<DeleteModal
+				showModal={state.showModal}
+				closeModal={closeModal}
+				modalAction={modalAction}
+			/>
+		</Fragment>
+	);
 	/****************************************/
 
 }
 /**************************************************************************************/
+
+export default TagIndex;

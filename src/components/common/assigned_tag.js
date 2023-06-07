@@ -3,39 +3,30 @@ import React from 'react';
 import minus from 'images/minus-circle.png';
 
 /**************************************************************************************/
-export default class AssignedTag extends React.Component {
+function AssignedTag(props) {
 
 	/****************************************/
-	constructor(props) {
-		super(props);
-
-		this.removeTag = this.removeTag.bind(this);
-	}
-	/****************************************/
-
-
-	/****************************************/
-	removeTag(e){
+	const removeTag = (e) =>{
 		e.preventDefault();
-		this.props.removeTag(this.props.tag);
+		props.removeTag(props.tag);
 	}
 	/****************************************/
 
 	
 	/****************************************/
-	render(){
-		return(
-			<div className="row">
-				<div className="col-12">
-					<a href="# " onClick={(e) => this.removeTag(e)}>
-						<img src={minus} alt="remove tag" />&nbsp;
-						<span className="tag-link">{this.props.tag.tag}</span>
-					</a>
-				</div>
+	return(
+		<div className="row">
+			<div className="col-12">
+				<a href="# " onClick={(e) => removeTag(e)}>
+					<img src={minus} alt="remove tag" />&nbsp;
+					<span className="tag-link">{props.tag.tag}</span>
+				</a>
 			</div>
-		)
-	}
+		</div>
+	);
 	/****************************************/
 
 }
 /**************************************************************************************/
+
+export default AssignedTag;
