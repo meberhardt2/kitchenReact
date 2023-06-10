@@ -26,6 +26,7 @@ if(ip.includes("10.192.")){
     http.createServer(app).listen(4000);
 }
 else{
+	//this is not actually run in prod, prod has it's own kitchen.js set up
     const http = require('http');
     http.createServer(app).listen(4100);
 	/*
