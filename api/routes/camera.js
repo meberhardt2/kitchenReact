@@ -16,7 +16,7 @@ const camera = (app,DB,fs,tesseract,allowed_ip) => {
 			image.file = file;
 			image.tesseract = tesseract;
 
-			let promise = new Promise((resolve, reject) => {
+			let promise = new Promise((resolve) => {
 				let text_out = image.process();
 				
 				resolve(text_out);
