@@ -3,7 +3,7 @@ const upload = (app,DB,fs,tesseract,uploadMulter,allowed_ip) => {
 
 	/********************************************/
 	app.post('/api/upload', uploadMulter.single('imagefile'), async (request, response) => {
-		const remoteAddress = request.connection.remoteAddress;
+		const remoteAddress = request.get("x-real-ip");
 		if(remoteAddress.includes(allowed_ip)){
 			//imagefile is the name of the formfield that has the image
 			//multer can also take an array of files
