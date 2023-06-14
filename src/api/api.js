@@ -7,7 +7,7 @@ const hostname = window && window.location && window.location.hostname;
 if(hostname === 'dev.eberhardt.cloud'){
 	backendHost = 'http://dev.eberhardt.cloud:4000';
 }
-if(hostname === 'devprod.eberhardt.cloud'){
+else if(hostname === 'devprod.eberhardt.cloud'){
 	backendHost = 'http://devprod.eberhardt.cloud:4100';
 }
 else{
