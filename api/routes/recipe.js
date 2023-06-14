@@ -5,7 +5,7 @@ const recipe = (app,DB,creds,allowed_ip) => {
 	/********************************************/
 	app.delete('/api/recipe/:id', (request, response) => {
 		const remoteAddress = request.get("x-real-ip");
-		if(remoteAddress.includes(allowed_ip)){
+		if(global.Dev || remoteAddress.includes(allowed_ip)){
 			const Recipe = require('../classes/recipe');
 			let recipe = new Recipe(DB);
 
@@ -37,7 +37,7 @@ const recipe = (app,DB,creds,allowed_ip) => {
 	/********************************************/
 	app.post('/api/recipe', (request, response) => {
 		const remoteAddress = request.get("x-real-ip");
-		if(remoteAddress.includes(allowed_ip)){
+		if(global.Dev || remoteAddress.includes(allowed_ip)){
 			const Recipe = require('../classes/recipe');
 			
 			let recipe = new Recipe(DB);
@@ -60,7 +60,7 @@ const recipe = (app,DB,creds,allowed_ip) => {
 	/********************************************/
 	app.patch('/api/recipe/:id', (request, response) => {
 		const remoteAddress = request.get("x-real-ip");
-		if(remoteAddress.includes(allowed_ip)){
+		if(global.Dev || remoteAddress.includes(allowed_ip)){
 			const Recipe = require('../classes/recipe');
 			
 			let recipe = new Recipe(DB);
@@ -80,7 +80,7 @@ const recipe = (app,DB,creds,allowed_ip) => {
 	/********************************************/
 	app.post('/api/recipe/:id/sendgrid', (request, response) => {
 		const remoteAddress = request.get("x-real-ip");
-		if(remoteAddress.includes(allowed_ip)){
+		if(global.Dev || remoteAddress.includes(allowed_ip)){
 			const Recipe = require('../classes/recipe');
 			
 			let recipe = new Recipe(DB);
@@ -101,7 +101,7 @@ const recipe = (app,DB,creds,allowed_ip) => {
 	/********************************************/
 	app.post('/api/recipe/:id/gmail', (request, response) => {
 		const remoteAddress = request.get("x-real-ip");
-		if(remoteAddress.includes(allowed_ip)){
+		if(global.Dev || remoteAddress.includes(allowed_ip)){
 			const Recipe = require('../classes/recipe');
 			
 			let recipe = new Recipe(DB);

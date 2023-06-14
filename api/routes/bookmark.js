@@ -5,7 +5,7 @@ const bookmark = (app,DB,allowed_ip) => {
 	/********************************************/
 	app.post('/api/bookmark', (request, response) => {
 		const remoteAddress = request.get("x-real-ip");
-		if(remoteAddress.includes(allowed_ip)){
+		if(global.Dev || remoteAddress.includes(allowed_ip)){
 			const Recipe = require('../classes/recipe');
 			
 			let recipe = new Recipe(DB);

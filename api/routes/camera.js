@@ -4,7 +4,7 @@ const camera = (app,DB,fs,tesseract,allowed_ip) => {
 	/********************************************/
 	app.post('/api/camera', async (request, response) => {
 		const remoteAddress = request.get("x-real-ip");
-		if(remoteAddress.includes(allowed_ip)){
+		if(global.Dev || remoteAddress.includes(allowed_ip)){
 			let file = '../kitchenExpress/uploads/for_ocr.png';
 			let post = request.body;
 			let bitmap = Buffer.from(post.image, 'base64');

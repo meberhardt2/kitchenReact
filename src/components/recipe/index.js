@@ -331,6 +331,7 @@ function Recipe() {
 				if(data.status === 'ok'){
 					setValues({
 						...state,
+						showModal: false,
 						id: 0,
 						recipe_name: '',
 						recipe: '',

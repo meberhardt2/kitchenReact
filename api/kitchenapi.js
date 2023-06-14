@@ -1,3 +1,5 @@
+global.Dev = true;
+
 const express = require("express");
 const cors = require('cors');
 const bookmark = require('./routes/bookmark');
@@ -44,7 +46,7 @@ else{
 */
 
 
-const uploadMulter = multer({ dest: __dirname+'/kitchenExpress/uploads/' });
+const uploadMulter = multer({ dest: __dirname+'/uploads/' });
 
 
 //node-sqlite3 runs asynchronous, which leads to promise mess of chaining. better-sqlite3 runs synchronously

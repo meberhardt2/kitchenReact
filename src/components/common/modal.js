@@ -10,17 +10,19 @@ function Modal(props) {
 
 			<div className='generic-modal-window'>
 				<div className="generic-modal-header">
-						<h5 className="modal-title">{props.title}</h5>
+						<div>{props.title}</div>
 				</div>
-				<div className="modal-body" dangerouslySetInnerHTML={{ __html: props.body}} />
-				<div className="modal-footer">
-					<button type="button" className={'btn '+props.primaryStyle} onClick={props.primaryAction}>{props.primaryText}</button>
-					{props.secondaryText !== '' &&
-						<button type="button" className={'btn '+props.secondaryStyle} onClick={props.secondaryAction}>{props.secondaryText}</button>
-					}
+				<div className='generic-modal-scroll'>
+					<div dangerouslySetInnerHTML={{ __html: props.body}} />
+
+					<div className='generic-modal-button-container'>
+						<button type="button" className={'btn '+props.primaryStyle} onClick={props.primaryAction}>{props.primaryText}</button>
+						{props.secondaryText !== '' &&
+							<button type="button" className={'btn '+props.secondaryStyle} onClick={props.secondaryAction}>{props.secondaryText}</button>
+						}
+					</div>
 				</div>
 			</div>
-			<div className="modal-backdrop fade show"></div>
 		</div>
 	);
 	/****************************************/

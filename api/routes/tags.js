@@ -16,7 +16,7 @@ const tags = (app,DB,allowed_ip) => {
 	/********************************************/
 	app.post('/api/tags', (request, response) => {
 		const remoteAddress = request.get("x-real-ip");
-		if(remoteAddress.includes(allowed_ip)){
+		if(global.Dev || remoteAddress.includes(allowed_ip)){
 			const Tag = require('../classes/tag');
 			
 			let tag = new Tag(DB);
@@ -39,7 +39,7 @@ const tags = (app,DB,allowed_ip) => {
 	/********************************************/
 	app.delete('/api/tags/:id', (request, response) => {
 		const remoteAddress = request.get("x-real-ip");
-		if(remoteAddress.includes(allowed_ip)){
+		if(global.Dev || remoteAddress.includes(allowed_ip)){
 			const Tag = require('../classes/tag');
 			
 			let tag = new Tag(DB);
@@ -58,7 +58,7 @@ const tags = (app,DB,allowed_ip) => {
 	/********************************************/
 	app.patch('/api/tags/:id', (request, response) => {
 		const remoteAddress = request.get("x-real-ip");
-		if(remoteAddress.includes(allowed_ip)){
+		if(global.Dev || remoteAddress.includes(allowed_ip)){
 			const Tag = require('../classes/tag');
 			
 			let tag = new Tag(DB);
