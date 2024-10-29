@@ -3,6 +3,7 @@ a:focus, a:hover {
 	text-decoration: none;
 }
 
+
 .btn-cancel, .btn-cancel:hover, .btn-cancel:focus {
 	color: #333;
 	text-shadow: none; 
